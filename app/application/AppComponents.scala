@@ -7,24 +7,20 @@ import play.api.mvc.{ControllerComponents, EssentialFilter}
 import play.filters.cors.{CORSConfig, CORSFilter}
 import router.Routes
 
-class AppComponents(context: Context)
-    extends BuiltInComponentsFromContext(context)
-    {
+class AppComponents(context: Context) extends BuiltInComponentsFromContext(context) {
 
-      implicit val contrComponents: ControllerComponents = controllerComponents
+  implicit val contrComponents: ControllerComponents = controllerComponents
 
-      private lazy val homeController: HomeController = new HomeController
+  private lazy val homeController: HomeController = new HomeController
 
-      lazy val router: Routes = new Routes(
-        httpErrorHandler,
-        homeController
-      )
+  lazy val router: Routes = new Routes(
+    httpErrorHandler,
+    homeController
+  )
 
-      val corsFilter: CORSFilter =
-        CORSFilter.apply(CORSConfig.fromConfiguration(context.initialConfiguration))
+  val corsFilter: CORSFilter =
+    CORSFilter.apply(CORSConfig.fromConfiguration(context.initialConfiguration))
 
-      override val httpFilters: Seq[EssentialFilter] = Seq(corsFilter)
+  override val httpFilters: Seq[EssentialFilter] = Seq(corsFilter)
 
-
-
-    }
+}

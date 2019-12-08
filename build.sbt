@@ -8,7 +8,7 @@ RoutesKeys.routesImport -= "controllers.Assets.Asset" //workaround for routes un
 name := "xxx"
 version := "0.1"
 
-scalaVersion := "2.13.1"
+scalaVersion := "2.13.0"
 
 val circeVersion                = "0.12.3"
 val circeGenericExtrasVersion   = "0.12.2"
@@ -91,7 +91,6 @@ scalacOptions ++= Seq(
   "-Xcheckinit", // Wrap field accessors to throw an exception on uninitialized access.
   "-Xcheckinit", // Wrap field accessors to throw an exception on uninitialized access.
   "-Xfatal-warnings", // Fail the compilation if there are any warnings.
-  "-Xfuture", // Turn on future language features.
   "-Xlint:adapted-args", // Warn if an argument list is modified to match the receiver.
   "-Xlint:constant", // Evaluation of a constant arithmetic expression results in an error.
   "-Xlint:delayedinit-select", // Selecting member of DelayedInit.
