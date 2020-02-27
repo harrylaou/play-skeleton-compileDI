@@ -1,44 +1,47 @@
-import wartremover.Wart
-import wartremover.{Warts => Wartz}
-import wartremover.contrib.ContribWart
 import play.sbt.routes.RoutesKeys
+import wartremover.contrib.ContribWart
+import wartremover.{Wart, Warts => Wartz}
 RoutesKeys.routesImport -= "controllers.Assets.Asset" //workaround for routes unused imports
 
 
 name := "xxx"
 version := "0.1"
 
-scalaVersion := "2.13.0"
+scalaVersion := "2.13.1"
 
-val circeVersion                = "0.12.3"
-val circeGenericExtrasVersion   = "0.12.2"
-val circeDerivationVersion      = "0.12.0-M7"
+val circeVersion                = "0.13.0"
+val circeDerivationVersion      = "0.13.0-M1"
 
-val enumeratumVersion           = "1.5.13"
-val enumeratumCirceVersion      = "1.5.22"
+val enumeratumVersion           = "1.5.15"
+val enumeratumCirceVersion      = "1.5.23"
 
-val silencerVersion             = "1.4.2"
+val silencerVersion             = "1.6.0"
 
 lazy val root = (project in file(".")).enablePlugins(PlayScala)
 
 
 libraryDependencies ++= Seq(
-  compilerPlugin("com.github.ghik"  %% "silencer-plugin"      % silencerVersion),
-
+  ws,
   "com.beachape"                    %% "enumeratum"           % enumeratumVersion,
   "com.beachape"                    %% "enumeratum-circe"     % enumeratumCirceVersion,
-  "com.dripower"                    %% "play-circe"           % "2712.0",
-  "com.github.ghik"                 %% "silencer-lib"         % silencerVersion % Provided,
-  "com.github.pureconfig"           %% "pureconfig"           % "0.12.1",
+  "com.dripower"                    %% "play-circe"           % "2812.0",
+  "com.github.pureconfig"           %% "pureconfig"           % "0.12.2",
+
+  compilerPlugin("com.github.ghik" % "silencer-plugin" % silencerVersion cross CrossVersion.full),
+  "com.github.ghik"        % "silencer-lib"                      % silencerVersion % Provided cross CrossVersion.full,
 
   "io.circe"                        %% "circe-core"           % circeVersion,
   "io.circe"                        %% "circe-derivation"     % circeDerivationVersion,
-  "io.circe"                        %% "circe-generic-extras" % circeGenericExtrasVersion,
+  "io.circe"                        %% "circe-generic-extras" % circeVersion,
   "io.circe"                        %% "circe-parser"         % circeVersion,
 
-  "org.typelevel"                   %% "cats-core"            % "2.0.0",
+  "org.typelevel"                   %% "cats-core"            % "2.1.1",
   //TEST
-  "org.scalatestplus.play"          %% "scalatestplus-play"   % "4.0.3" % "test,it"
+  "com.danielasfregola"        %% "random-data-generator"       % "2.8"    % Test,
+  "com.47deg"                  %% "scalacheck-toolbox-datetime" % "0.3.1"  % Test,
+  "org.scalatestplus.play"     %% "scalatestplus-play"          % "5.0.0"  % Test,
+  "org.mockito"                %% "mockito-scala-scalatest"     % "1.11.2" % Test,
+  "com.github.alexarchambault" %% "scalacheck-shapeless_1.14"   % "1.2.4"  % Test
 )
 
 excludeDependencies ++= Seq(
@@ -56,26 +59,27 @@ parallelExecution in Test := false
 testOptions in Test +=
   Tests.Setup(() => sys.props += "logger.resource" -> "logback.xml")
 
-val wartsExcludes = Seq(
 
+val wartsExcludes = Seq(
+  Wart.Any, // circe encoders/ decoders , mapN , traverse : are failing
+  Wart.StringPlusAny, // String interpolation should work
   Wart.DefaultArguments,
   Wart.IsInstanceOf, //why isInstanceOf shouldn't be used?\ asInstanceOf shouldn't be used.
   Wart.Null, //gives a false positive in overloaded methods in logger. splease don't use nulls
   Wart.Nothing, // many false positives
   Wart.ImplicitParameter, // I need implicit parameters. ex. executioncontext
   Wart.PublicInference, // many false positives
-  Wart.ToString, // case classes don not need to override string
+  Wart.ToString, // case classes do not need to override string
   Wart.Overloading
 )
 
-val wartsContrib = Seq( //from wartremover-contrib , need to be added one by one
-  ContribWart.NoNeedForMonad,
-  ContribWart.OldTime,
-  ContribWart.SealedCaseClass,
-  ContribWart.SomeApply
+val wartsContribExcludes = Seq( //from wartremover-contrib , need to be added one by one
+  ContribWart.Apply, //many false positives in circe encoders/ decoders
+  ContribWart.NoNeedForMonad, //https://github.com/wartremover/wartremover-contrib/issues/34
+  ContribWart.UnsafeInheritance, // for this I need major refactoring
 )
 
-wartremoverErrors ++= Wartz.allBut(wartsExcludes: _*)
+wartremoverErrors ++=  Wartz.allBut(wartsExcludes ++ wartsContribExcludes : _*)
 
 scalacOptions ++= Seq(
   "-deprecation", // Emit warning and location for usages of deprecated APIs.

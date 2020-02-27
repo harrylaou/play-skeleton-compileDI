@@ -1,0 +1,49 @@
+<!-- https://www.playframework.com/documentation/latest/SettingsLogger -->
+<configuration scan="false" debug="true">
+    <conversionRule conversionWord="coloredLevel" converterClass="play.api.libs.logback.ColoredLevel"/>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%n%coloredLevel-traceID:[%traceID]-spanID:[%spanID]-requestID:%boldMagenta([%contextEntry{requestID}])-%logger:%line-%message%n%ex</pattern>
+        </encoder>
+    </appender>
+    <!--https://logback.qos.ch/manual/configuration.html-->
+    <!--Use env vars to override the default value if needed.-->
+
+    <appender name="ASYNC" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="STDOUT" />
+    </appender>
+
+
+    <logger name="application" level="${log.level.application:-TRACE}"/>
+    <logger name="application.LoggingFilter" level="${log.level.application.LoggingFilter:-TRACE}"/>
+    <logger name="application.LoggingFilter.body" level="${log.level.application.LoggingFilter.body:-TRACE}"/>
+
+    <logger name="play" level="${log.level.root:-INFO}"/>
+    <logger name="play.api" level="${log.level.play.api:-INFO}"/>
+    <logger name="play.mailer" level="${log.level.play.api:-ERROR}"/>
+
+    <!--Other libraries-->
+    <logger name="akka.actor" level="${log.level.akka.actor:-INFO}"/>
+    <logger name="akka.event" level="${log.level.akka.event:-INFO}"/>
+    <logger name="akka.event.Logging" level="${log.level.akka.event.Logging:-INFO}"/>
+    <logger name="akka.io.TcpListener" level="${log.level.akka.io.TcpListener:-INFO}"/>
+    <logger name="akka.io.TcpOutgoingConnection" level="${log.level.akka.io.TcpOutgoingConnection:-INFO}"/>
+    <logger name="akka.stream.impl.io" level="${log.level.akka.stream.impl.io:-INFO}"/>
+
+    <logger name="com.typesafe.sslconfig.akka" level="${log.level.com.openhtmltopdf:-INFO}"/>
+
+    <logger name="ch.qos.logback" level="${log.level.ch.qos.logback:-INFO}"/>
+
+    <logger name="io.netty" level="${log.level.netty:-INFO}"/>
+
+    <logger name="org.asynchttpclient" level="${log.level.org.asynchttpclient:-INFO}"/>
+
+    <logger name="shaded.netty.channel.socket.nio" level="${log.level.shaded.netty.channel.socket.nio:-INFO}"/>
+
+    <root level="${log.level.root:-INFO}">
+        <appender-ref ref="ASYNC"/>
+    </root>
+</configuration>
+
+

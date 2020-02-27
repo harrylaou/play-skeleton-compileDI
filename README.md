@@ -5,5 +5,17 @@ Play application skeleton - compile-time DI
 
 This is a play application skeleton with compiler-time DI setup. 
 
-It is somehow a bit opinionated  since it is including some libraries by default. 
+It is opinionated:
+
+- Monad Transformers Aliases for error handling 
+- Cats
+- Circe
+- PureConfig
+- Enumeratum
+- Wartremover  -Wartremover Contrib
+- Scalafmt
+- Silencer 
+- Kind Projector
+- sbt-dependency-check
+- sbt-updates
 
