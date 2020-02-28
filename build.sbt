@@ -4,7 +4,7 @@ import wartremover.{Wart, Warts => Wartz}
 RoutesKeys.routesImport -= "controllers.Assets.Asset" //workaround for routes unused imports
 
 
-name := "xxx"
+name := "play-skeleton"
 version := "0.1"
 
 scalaVersion := "2.13.1"

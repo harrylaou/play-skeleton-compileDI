@@ -1,10 +1,10 @@
 <!-- https://www.playframework.com/documentation/latest/SettingsLogger -->
-<configuration scan="false" debug="true">
+<configuration scan="false" debug="false">
     <conversionRule conversionWord="coloredLevel" converterClass="play.api.libs.logback.ColoredLevel"/>
 
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>%n%coloredLevel-traceID:[%traceID]-spanID:[%spanID]-requestID:%boldMagenta([%contextEntry{requestID}])-%logger:%line-%message%n%ex</pattern>
+            <pattern>%n%coloredLevel-%logger:%line-%message%n%ex</pattern>
         </encoder>
     </appender>
     <!--https://logback.qos.ch/manual/configuration.html-->
