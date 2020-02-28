@@ -56,7 +56,7 @@ package object results extends EitherSyntax {
       asyncResultT.leftMap(_.cleanException)
 
     /**
-      * to run a side-effect like logging and return the same feet
+      * to run a side-effect like logging and return the same asyncResult
       * is like `fut.andThen {case Success(x) => ....}`
       *
       */
