@@ -14,7 +14,6 @@ It is opinionated:
 - Enumeratum
 - Wartremover  -Wartremover Contrib
 - Scalafmt
-- Silencer 
 - Kind Projector
 - sbt-dependency-check
 - sbt-updates
