@@ -7,10 +7,10 @@ RoutesKeys.routesImport -= "controllers.Assets.Asset" //workaround for routes un
 name := "play-skeleton"
 version := "0.1"
 
-scalaVersion := "2.13.3"
+scalaVersion := "2.13.4"
 
 val circeVersion                = "0.13.0"
-val circeDerivationVersion      = "0.13.0-M4"
+val circeDerivationVersion      = "0.13.0-M5"
 
 val enumeratumVersion           = "1.6.1"
 
@@ -23,19 +23,19 @@ libraryDependencies ++= Seq(
   "com.beachape"                    %% "enumeratum"           % enumeratumVersion,
   "com.beachape"                    %% "enumeratum-circe"     % enumeratumVersion,
   "com.dripower"                    %% "play-circe"           % "2812.0",
-  "com.github.pureconfig"           %% "pureconfig"           % "0.13.0",
+  "com.github.pureconfig"           %% "pureconfig"           % "0.14.0",
 
   "io.circe"                        %% "circe-core"           % circeVersion,
   "io.circe"                        %% "circe-derivation"     % circeDerivationVersion,
   "io.circe"                        %% "circe-generic-extras" % circeVersion,
   "io.circe"                        %% "circe-parser"         % circeVersion,
 
-  "org.typelevel"                   %% "cats-core"            % "2.1.1",
+  "org.typelevel"                   %% "cats-core"            % "2.3.1",
   //TEST
-  "com.danielasfregola"        %% "random-data-generator"       % "2.8"    % Test,
-  "com.47deg"                  %% "scalacheck-toolbox-datetime" % "0.3.5"  % Test,
-  "org.scalatestplus.play"     %% "scalatestplus-play"          % "5.0.0"  % Test,
-  "org.mockito"                %% "mockito-scala-scalatest"     % "1.14.8" % Test,
+  "com.danielasfregola"        %% "random-data-generator"       % "2.9"    % Test,
+  "com.47deg"                  %% "scalacheck-toolbox-datetime" % "0.4.0"  % Test,
+  "org.scalatestplus.play"     %% "scalatestplus-play"          % "5.1.0"  % Test,
+  "org.mockito"                %% "mockito-scala-scalatest"     % "1.16.15" % Test,
   "com.github.alexarchambault" %% "scalacheck-shapeless_1.14"   % "1.2.5"  % Test
 )
 
@@ -45,7 +45,7 @@ excludeDependencies ++= Seq(
   "org.webjars"      % "webjars-locator-core"
 )
 
-addCompilerPlugin("org.typelevel" %% "kind-projector" % "0.11.0" cross CrossVersion.full)
+addCompilerPlugin("org.typelevel" %% "kind-projector" % "0.11.3" cross CrossVersion.full)
 
 fork in Test := false
 

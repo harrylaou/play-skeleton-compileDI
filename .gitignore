@@ -47,3 +47,5 @@ fabric.properties
 /.idea/
 /project/project/target/
 
+
+.bsp/
