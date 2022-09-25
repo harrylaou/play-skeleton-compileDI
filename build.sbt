@@ -12,6 +12,7 @@ libraryDependencies ++= Seq(
   "com.dripower"               %% "play-circe"           % "2814.2",
   "com.github.pureconfig"      %% "pureconfig"           % "0.17.1",
   "com.typesafe.scala-logging" %% "scala-logging"        % "3.9.5",
+  "dev.zio"                    %% "zio"                  % "2.0.2",
   "io.circe"                   %% "circe-core"           % "0.14.3",
   "io.circe"                   %% "circe-generic-extras" % "0.14.2",
   "io.circe"                   %% "circe-parser"         % "0.14.3",
