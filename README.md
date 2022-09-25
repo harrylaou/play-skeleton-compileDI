@@ -7,7 +7,7 @@ This is a play application skeleton with compiler-time DI setup.
 
 It is opinionated:
 
-- Monad Transformers Aliases for error handling  
+- ZIO for async computations
 - Cats
 - Circe
 - PureConfig
