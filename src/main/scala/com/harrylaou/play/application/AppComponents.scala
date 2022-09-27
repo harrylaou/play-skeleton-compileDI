@@ -6,12 +6,11 @@ import play.api.libs.ws.WSClient
 import play.api.libs.ws.ahc.AhcWSComponents
 import play.api.mvc.{ControllerComponents, EssentialFilter}
 import play.filters.cors.{CORSConfig, CORSFilter}
-
-import router.Routes
+import zio.ZLayer
 
 import com.harrylaou.play.config.AppConfiguration
 import com.harrylaou.play.controllers.HomeController
-
+import router.Routes
 class AppComponents(context: Context) extends BuiltInComponentsFromContext(context) with AhcWSComponents {
 
   implicit lazy val ws: WSClient        = wsClient
@@ -25,6 +24,8 @@ class AppComponents(context: Context) extends BuiltInComponentsFromContext(conte
     httpErrorHandler,
     homeController
   )
+
+  implicit lazy val appLayer: AppLayer[Any] = ZLayer.empty
 
   val corsFilter: CORSFilter =
     CORSFilter.apply(CORSConfig.fromConfiguration(context.initialConfiguration))

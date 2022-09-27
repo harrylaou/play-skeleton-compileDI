@@ -12,6 +12,7 @@ import com.typesafe.scalalogging.LazyLogging
 import io.circe.syntax.*
 import io.circe.{Encoder, Json, Printer}
 
+import com.harrylaou.play.application.AppLayer
 import com.harrylaou.play.application.logging.*
 
 /** The usual usage is returnAsync(m)
@@ -31,9 +32,9 @@ trait AppResults extends Circe with LazyLogging {
     zioResult: ZIO[R, AppError, M],
     status: Results.Status = Results.Ok,
     customResponse: Option[M => Result] = None
-  )(implicit encoder: Encoder[M], r: ZEnvironment[R], ec: ExecutionContext): Future[Result] =
+  )(implicit encoder: Encoder[M], r: AppLayer[R], ec: ExecutionContext): Future[Result] =
     Unsafe.unsafe { implicit unsafe =>
-      Runtime.default.unsafe.runToFuture(zioResult.provideEnvironment(r).either)
+      Runtime.default.unsafe.runToFuture(zioResult.provideLayer(r).either)
     }.future.map { maybeResult: Either[AppError, M] =>
       maybeResult match {
 
@@ -44,7 +45,7 @@ trait AppResults extends Circe with LazyLogging {
           customResponse.fold(status(m.asJson))(resp => resp(m))
       }
     }.recover { case th: Throwable =>
-      logger.error("This should never happern", th)
+      logger.error("This should never happen", th)
       Results.InternalServerError(th.getMessage)
     }
   def returnFile[R](
@@ -60,7 +61,7 @@ trait AppResults extends Circe with LazyLogging {
         case Right(file) => Results.Ok.sendFile(content = file)
       }
     }.recover { case th: Throwable =>
-      logger.error("This should never happern", th)
+      logger.error("This should never happen", th)
       Results.InternalServerError(th.getMessage)
     }
 
